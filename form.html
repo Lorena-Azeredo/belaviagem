@@ -1,0 +1,115 @@
+<html>
+<meta charset=UTF-8>
+   <body bgcolor="lightgreen">
+
+    <td colspan="0"><h1>Belo Destino ✈</h1></td>
+    <h2><center>Reserva da Viagem</center></h2>
+    
+    <form method=POST>
+
+ <hr color="black">        
+
+<legend> 
+    <h4>Dados Pessoais:</h4> 
+</legend>
+    <br>CPF<br>
+    <input type=number name=cpf ><br>
+
+    <br>Nome completo<br>
+    <input type=text name=nome><br>
+
+    <br>Sexo<br>
+        <input type=radio name=sexo value=masculino>masculino
+        <input type=radio name=sexo value=feminino>feminino<br> 
+
+    <br>Data de Nascimento<br>
+    <input type=date name=datan placeholder="dd/mm/aaaa" ><br>
+
+    <br>E-mail<br>
+    <input type="email" name="email" ><br>
+
+    <br>Telefone<br>
+    <input type=tel name=telefone><br><br>
+
+ <hr color="black">   
+
+    <legend> 
+    <h4>Detalhes de Viagem:</h4> 
+    </legend>
+
+    <br>País de saida<br>
+    <input type=text name=paiss><br>
+
+    <br>País de destino<br>
+    <input type=text name=paisd><br>
+
+    <br>Data e hora de saída<br>
+    <input type=date name=datas> <input type=time name=horas> <br>
+    
+    <br><br>Classe da viagem<br>
+    <select name=classe>
+       <option value=exec>classe executiva 
+       <option value=prim>primeira classe
+       <option value=econ>classe econômica 
+    </select><br>
+
+    
+    <br>Por favor, marque o serviço que você precisa<br>
+    <input type=radio name=servico value=passagem> Passagens Aérea
+    <input type=radio name=servico value=aluguel>Aluguel de Carros
+    <input type=radio name=servico value=hotel>Acomodações em Hotéis
+      
+   <br><br><br>
+   <input type=submit value=Enviar>
+
+      </form>
+<hr color="black">
+
+Para outras operações clique abaixo: <br>
+<a href=apagarreserva.php><input type=button value="Apagar Reserva"></a>
+<a href=alterarreserv.php><input type=button value="Alterar Reserva"></a>
+    </body>
+</html>
+
+<?php
+if(isset($_POST["cpf"])){
+  //Fazendo a conexão com o MySQL Query Browser, via código.
+  $conexao=mysql_connect("localhost:3306","root", "root");
+  mysql_select_db("prova",$conexao);
+  //Criando as variáveis para manipulação dos dados.
+  $cpf = $_POST["cpf"];
+  $nome = $_POST["nome"];
+  $sexo = $_POST["sexo"];
+  $datan = $_POST["datan"];
+  $email = $_POST["email"];
+  $telefone = $_POST["telefone"];
+  $paiss = $_POST["paiss"];
+  $paisd = $_POST["paisd"];
+  $datas = $_POST["datas"];
+  $horas = $_POST["horas"];
+  $classe = $_POST["classe"];
+  $servico = $_POST["servico"];
+  //Inserindo os dados na tabela do MySQL Query Browser.
+  mysql_query("insert into Cadastros values(  '$cpf', '$nome', '$sexo', '$datan', '$email', '$telefone', '$paiss', '$paisd', '$datas', '$horas', '$classe', '$servico')",$conexao);
+  //Exibindo os dados da tabela do MySQL Query Browser.
+  $consulta = mysql_query("select * from Cadastros",$conexao);
+  while($exibir = mysql_fetch_array($consulta)){
+  echo "Dados Pessoais:<br>";
+  echo "<br>CPF: ".$exibir['cpf'];
+  echo "<br>Nome:".$exibir['nome'];
+  echo "<br>Sexo:".$exibir['sexo'];  
+  echo "<br>Data de Nascimento:".$exibir['datan'];
+  echo "<br>Email: ".$exibir['email'];
+  echo "<br>Telefone: ".$exibir['telefone'];
+  echo "Detalhes da Viagem:<br>";
+  echo "<br>País de Saída: ".$exibir['paiss'];
+  echo "<br>País de Destino: ".$exibir['paisd'];
+  echo "<br>Data de Embarque: ".$exibir['datas'];
+  echo "<br>Hora do Embarque: ".$exibir['horas'];
+  echo "<br>Classe da Viagem: ".$exibir['classe'];
+  echo "<br>Serviço Escolhido: ".$exibir['servico'];
+}
+  //Encerrando a conexão com o MySQL Query Browser.
+  mysql_close($conexao);
+}
+?>
